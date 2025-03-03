@@ -12,7 +12,7 @@ void Game::processInput(int input) {
   snake.changeDirection(input);
 }
 
-void Game::update() {
+void Game::update() { 
   snake.move();
 
   auto head = snake.getBody()[0];
@@ -20,17 +20,18 @@ void Game::update() {
   if (head.first == foodPos.first && head.second == foodPos.second) {
     score += 10;
     snake.grow();
+    snake.move();
     food.generate(maxX, maxY);
   }
 
-  if (snake.checkWallCollision(maxX, maxY)) {
+  if (snake.checkWallCollision(maxX, maxY) || snake.checkSelfCollision()) {
     gameOver = true;
   }
 }
 
 void Game::render() {
   clear();
-  mvprintw(maxX - 20, 5, "Score: %i", score);
+  mvprintw(0, 5, "Score: %i", score);
 
   auto body = snake.getBody();
   mvprintw(body[0].first, body[0].second, "O");
@@ -39,7 +40,7 @@ void Game::render() {
   }
 
   auto foodPos = food.getPosition();
-  mvprintw(foodPos.first, foodPos.second, "F");
+  mvprintw(foodPos.first, foodPos.second, "*");
 
   refresh();
 }

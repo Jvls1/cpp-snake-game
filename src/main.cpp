@@ -1,6 +1,13 @@
 #include <ncurses.h>
 #include <unistd.h>
 #include "../include/game.hpp"
+#include <fstream>
+#include <iostream>
+
+void redirectCoutToFile(const std::string& filename) {
+  static std::ofstream out(filename);
+  std::cout.rdbuf(out.rdbuf());
+}
 
 int main() {
   initscr();
@@ -12,6 +19,7 @@ int main() {
 
   int maxX, maxY;
   getmaxyx(stdscr, maxX, maxY);
+  redirectCoutToFile("logs.txt");
 
   Game game(maxX, maxY);
 

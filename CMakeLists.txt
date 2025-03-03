@@ -4,15 +4,13 @@ project(SnakeGame)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include_directories(include)
-
-set(SRC_FILES
-    src/main.cpp
-    src/game.cpp
-    src/snake.cpp
-    src/food.cpp
-)
+file(GLOB SRC_FILES "src/*.cpp")
 
 add_executable(SnakeGame ${SRC_FILES})
 
-target_link_libraries(SnakeGame ncurses)
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  include(${CMAKE_SOURCE_DIR}/cmake/toolchain-windows.cmake)
+  target_link_libraries(SnakeGame -static -lpdcurses)
+else()
+  include(${CMAKE_SOURCE_DIR}/cmake/toolchain-linux.cmake)
+endif()

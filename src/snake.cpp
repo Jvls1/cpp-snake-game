@@ -1,9 +1,11 @@
 #include <vector>
 #include <ncurses.h>
 #include "../include/snake.hpp"
+#include <iostream>
 
 Snake::Snake(int initialX, int initialY) {
   body = {{initialX, initialY}};
+  direction = KEY_RIGHT;
 }
 
 std::vector<std::pair<int, int>> Snake::getBody() {
@@ -11,12 +13,15 @@ std::vector<std::pair<int, int>> Snake::getBody() {
 }
 
 void Snake::changeDirection(int newDirection) {
-  if ((direction == KEY_UP && newDirection != KEY_DOWN) ||
-    (direction == KEY_DOWN && newDirection != KEY_UP) ||
-    (direction == KEY_LEFT && newDirection != KEY_RIGHT) ||
-    (direction == KEY_RIGHT && newDirection != KEY_LEFT)) {
-    direction = newDirection;
-  }   
+  if (newDirection == KEY_UP || newDirection == KEY_DOWN ||
+      newDirection == KEY_LEFT || newDirection == KEY_RIGHT) {
+    if ((direction == KEY_UP && newDirection != KEY_DOWN) ||
+        (direction == KEY_DOWN && newDirection != KEY_UP) ||
+        (direction == KEY_LEFT && newDirection != KEY_RIGHT) ||
+        (direction == KEY_RIGHT && newDirection != KEY_LEFT)) {
+      direction = newDirection;
+    }
+  }
 }
 
 void Snake::move() {
